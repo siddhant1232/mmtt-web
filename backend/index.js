@@ -25,6 +25,13 @@ function validateLocationPoint(body) {
   }
   return { valid: true };
 }
+app.get("/debug/routes", (req, res) => {
+  const routes = app._router.stack
+    .filter((r) => r.route)
+    .map((r) => ({ path: r.route.path, method: Object.keys(r.route.methods) }));
+  res.json(routes);
+});
+
 app.get("/", (req, res) => {
   res.send("MMTT GPS Backend is running. Routes: POST /ingest, GET /device/:id/latest, GET /device/:id/history, GET /health");
 });
