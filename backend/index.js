@@ -25,10 +25,13 @@ function validateLocationPoint(body) {
   }
   return { valid: true };
 }
-
+app.get("/", (req, res) => {
+  res.send("MMTT GPS Backend is running. Routes: POST /ingest, GET /device/:id/latest, GET /device/:id/history, GET /health");
+});
 // POST /ingest - Accept GPS data from ESP32
 app.post('/ingest', (req, res) => {
   try {
+    console.log('🔥 /ingest hit with body:', req.body);
     const validation = validateLocationPoint(req.body);
     if (!validation.valid) {
       return res.status(400).json({ error: validation.error });
