@@ -25,20 +25,30 @@ function validateLocationPoint(body) {
   }
   return { valid: true };
 }
-app.get("/debug/routes", (req, res) => {
+
+// Root route – to confirm correct file is running
+app.get('/', (req, res) => {
+  res.send(
+    'MMTT GPS Backend is running. Routes: POST /ingest, GET /device/:id/latest, GET /device/:id/history, GET /health, GET /debug/routes'
+  );
+});
+
+// DEBUG: list all registered routes
+app.get('/debug/routes', (req, res) => {
   const routes = app._router.stack
-    .filter((r) => r.route)
-    .map((r) => ({ path: r.route.path, method: Object.keys(r.route.methods) }));
+    .filter((layer) => layer.route)
+    .map((layer) => ({
+      path: layer.route.path,
+      methods: Object.keys(layer.route.methods),
+    }));
   res.json(routes);
 });
 
-app.get("/", (req, res) => {
-  res.send("MMTT GPS Backend is running. Routes: POST /ingest, GET /device/:id/latest, GET /device/:id/history, GET /health");
-});
 // POST /ingest - Accept GPS data from ESP32
 app.post('/ingest', (req, res) => {
   try {
     console.log('🔥 /ingest hit with body:', req.body);
+
     const validation = validateLocationPoint(req.body);
     if (!validation.valid) {
       return res.status(400).json({ error: validation.error });
@@ -51,7 +61,7 @@ app.post('/ingest', (req, res) => {
       speed,
       battery,
       sos,
-      timestamp
+      timestamp,
     } = req.body;
 
     // Create location point
@@ -62,7 +72,7 @@ app.post('/ingest', (req, res) => {
       speed: speed !== undefined ? speed : null,
       battery: battery !== undefined ? battery : null,
       sos: sos !== undefined ? sos : false,
-      timestamp: timestamp || Math.floor(Date.now() / 1000)
+      timestamp: timestamp || Math.floor(Date.now() / 1000),
     };
 
     // Store as latest
@@ -120,4 +130,3 @@ app.get('/health', (req, res) => {
 app.listen(PORT, () => {
   console.log(`GPS Tracking Backend running on port ${PORT}`);
 });
-
