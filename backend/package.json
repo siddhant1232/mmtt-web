@@ -1,0 +1,17 @@
+{
+  "name": "gps-tracking-backend",
+  "version": "1.0.0",
+  "description": "Backend API for real-time GPS tracking system",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": ["gps", "tracking", "api"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  }
+}
+
