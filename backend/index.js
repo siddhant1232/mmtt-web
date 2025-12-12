@@ -96,6 +96,7 @@ app.get("/debug", (req, res) => {
     historyCounts: Object.keys(historyByDevice).reduce((acc, key) => {
       acc[key] = historyByDevice[key].length;
       return acc;
+      
     }, {})
   });
 });
@@ -105,3 +106,4 @@ app.listen(PORT, () => {
   console.log(`🚀 Backend running on port ${PORT}`);
   console.log(`📡 Ready to receive GPS data`);
 });
+                  
