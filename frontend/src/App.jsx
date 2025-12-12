@@ -9,7 +9,7 @@ import {
   useMap,
 } from 'react-leaflet';
 import { Icon } from 'leaflet';
-import { fetchLatestLocation, fetchHistory } from './api/.js';
+import { fetchLatestLocation, fetchHistory } from './api/trackingapp.js';
 import './App.css';
 
 // Fix for default marker icon in React-Leaflet
